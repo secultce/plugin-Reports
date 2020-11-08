@@ -1,0 +1,67 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "7e4d583cb527ab833d5f26a7ec5504d4",
+    "packages": [
+        {
+            "name": "geekcom/phpjasper",
+            "version": "3.3.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPJasper/phpjasper.git",
+                "reference": "df25051c1c50410d89d51fa84b8b6457b3c1e851"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPJasper/phpjasper/zipball/df25051c1c50410d89d51fa84b8b6457b3c1e851",
+                "reference": "df25051c1c50410d89d51fa84b8b6457b3c1e851",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.2"
+            },
+            "require-dev": {
+                "php-coveralls/php-coveralls": "^2.2",
+                "phpstan/phpstan": "^0.12.5",
+                "phpunit/phpunit": "^8.4",
+                "squizlabs/php_codesniffer": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PHPJasper\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Daniel Rodrigues Lima",
+                    "email": "geekcom@php.net",
+                    "role": "lead"
+                }
+            ],
+            "description": "A PHP report generator",
+            "keywords": [
+                "pdf",
+                "php-reports",
+                "reports"
+            ],
+            "time": "2020-03-18T14:10:39+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": [],
+    "platform-dev": [],
+    "plugin-api-version": "1.1.0"
+}
