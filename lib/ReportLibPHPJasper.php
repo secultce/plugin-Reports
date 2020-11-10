@@ -4,27 +4,33 @@ use PHPJasper\PHPJasper;
 class ReportLib implements ReportLibInterface
 {
 
-    public function buildReport($inputJRXML, $path_build)
+    public function buildReport($inputJRXML)
     {
         $jasper = new PHPJasper;
-        $output_build = $path_build;
-        $compile = $jasper->compile($inputJRXML);
-        return $jasper -> process($compile, $output_build);
+        return $jasper->compile($inputJRXML)->execute();
     }
-    public function executeReport($inputReport, $outputReport, $dataFile, $format, $params, $driver, $query)
-    {
+    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query)
+    {   
+        
         $options = [
             'format' => [$format],
             'params' => [
-                $params
+                "data_divulgacao" => '19-12-2020',
             ],
             'locale' => 'en',
             'db_connection' => [
                 'driver' => $driver,
                 'data_file' => $data_file,
-                'json_query' => $query || null
-            ]
+                'json_query' => $query || null,
+            ],
         ];
+        $jasper = new PHPJasper;
+
+       return $jasper->process(
+            $inputReport,
+            $outputReport,
+            $options
+        )->execute();
 
     }
 

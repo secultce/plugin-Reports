@@ -1,5 +1,6 @@
 <?php
 
+use ReportLibInterface;
 class Report
 {
     private $report;
@@ -10,9 +11,9 @@ class Report
 
     }
 
-    public function executerReport($inputReport, $outputReport, $dataFile, $format, $params, $driver, $query)
+    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query)
     {
-        return $this->report->executeReport($inputReport, $outputReport, $dataFile, $format, $params, $driver, $query);
+        return $this->report->executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query);
     }
     public function downloadFiles($arquivo)
     {
@@ -46,7 +47,7 @@ class Report
     }
     public function deleteFiles($arquivo)
     {
-        return unlink($delete_json_data);
+        return unlink($arquivo);
     }
 
 }
