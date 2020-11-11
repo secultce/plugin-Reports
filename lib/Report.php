@@ -1,19 +1,24 @@
 <?php
 
-use ReportLibInterface;
-class Report
+require './lib/ReportLib.php';
+require './lib/ReportLibPHPJasper.php';
+
+class Report extends ReportLib implements ReportLibInterface
 {
     private $report;
 
-    public function __construct(ReportLibInterface $report)
+    public function __construct()
     {
-        $this->report = $report;
+        $this->report = new ReportLibInterface;
 
     }
 
     public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query)
     {
         return $this->report->executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query);
+    }
+    public function buildReport($inputJRXML){
+        return $this->report->buildReport($inputJRXML);
     }
     public function downloadFiles($arquivo)
     {

@@ -1,30 +1,35 @@
 <?php
+require './lib/Report.php';
+
 use Report;
 
-class ReportController
+class ReportController 
 {
 
     private $report;
 
-
-    public function __construct(Report $report)
+    public function __construct()
     {
-        $this->report = $report;
+        $this->report = new Report();
     }
 
     public function reportGeneration()
     {
-        $inputReport = __DIR__ . '/jasper/resultado-preliminar.jrxml';
-        $outputReportBuild = __DIR__ . '/jasper';
-        $inputReportBuild = __DIR__ . '/jasper/resultado-preliminar.jasper';
+        $file = __DIR__ . '/jasper/reports/resultado-preliminar.pdf';
+        $inputJRXML = __DIR__ . '/jasper/resultado-preliminar.jrxml';
+        $outputReportFile = __DIR__ . '/jasper/reports';
+        $inputJasper = __DIR__ . '/jasper/resultado-preliminar.jasper';
         $dataFile = __DIR__ . '/data/data.json';
         $format = 'PDF';
         $driver = 'JSON';
         $query = null;
-        if (file_exists($inputReportBuild)) {
-            $this->report->executeReport($inputReportBuild, $outputReportBuild, $dataFile, $format, )
+        if (file_exists($inputJasper)) {
+            $this->report->executeReport($inputJasper, $outputReportFile, $dataFile, $format,$driver, $query);
+            $this->report->downloadFiles($file);
         } else {
-
+            $this->report->buildReport($inputJRXML);
+            $this->report->executeReport($inputJasper, $outputReportFile, $dataFile, $format,$driver, $query);
+            $this->report->downloadFiles($file);
         }
 
     }
