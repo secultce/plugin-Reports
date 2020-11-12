@@ -1,17 +1,30 @@
 <?php
+require_once './lib/ReportLib.php';
+require_once './lib/IRerport.php';
 
-include("./lib/ReportLib.php");
-
-class Report implements ReportLibInterface
+class Report extends ReportLib 
 {
     
+    private $reportLib;
+
+    public function __construct(IReport $reportLib)
+    {
+        $this->reportLib = $reportLib; 
+    }
+
+    //BUILDA O ARQUIVO JRXML PARA .JASPER
+    public function buildReport($inputJRXML){
+        //echo $inputJRXML;
+        return $this->reportLib->buildReport($inputJRXML);
+    }
+
+    //EXECUTA O ARQUIVO .JASPER
     public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query)
     {
-        return execReport($inputReport, $outputReport, $dataFile, $format, $driver, $query);
+        return $this->reportLib->executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query);
     }
-    public function buildReport($inputJRXML){
-        return buildReport($inputJRXML);
-    }
+    
+    //GERA O DOWNLOAD DOS RELATÓRIOS
     public function downloadFiles($arquivo)
     {
         if (isset($arquivo) && file_exists($arquivo)) {
@@ -42,6 +55,8 @@ class Report implements ReportLibInterface
             exit; // aborta pós-ações
         }
     }
+
+    //EXCLUI OS ARQUIVOS TEMPORÁRIOS
     public function deleteFiles($arquivo)
     {
         return unlink($arquivo);
