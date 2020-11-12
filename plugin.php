@@ -17,20 +17,10 @@
 //     }
 // }
 
+include("./controller/ReportController.php");
 
-require './controller/ReportController.php';
+$obj = new ReportController();
 
+$a = $obj->reportGeneration();
 
-class Plugin extends ReportController{
-
-    private $report;
-    
-    function exec(){
-       $this->report = new ReportController();
-       return $this->report->reportGeneration();
-    }
-}
-
-$obj = new Plugin();
-
-echo $obj->exec();
+echo $a;

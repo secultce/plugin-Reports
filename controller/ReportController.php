@@ -1,7 +1,5 @@
 <?php
-require './lib/Report.php';
-
-use Report;
+include("./lib/Report.php");
 
 class ReportController 
 {
@@ -12,7 +10,7 @@ class ReportController
     {
         $this->report = new Report();
     }
-
+    
     public function reportGeneration()
     {
         $file = __DIR__ . '/jasper/reports/resultado-preliminar.pdf';
