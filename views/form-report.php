@@ -25,7 +25,13 @@
 	<div class="form-group">
       <label>Subject:</label>
       <input type="text" class="form-control" id="name" placeholder="Subject" name="subject">
-</div>
+    </div>
+	 
+	<div class="form-group">
+      <label>Issues/query:</label>
+      <textarea name="issues" class="form-control" id="iq" placeholder="Enter your Issues/query"></textarea>
+    </div>
+	
     
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
