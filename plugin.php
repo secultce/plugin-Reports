@@ -1,5 +1,11 @@
 <?php
+namespace Reports;
+use MapasCulturais\App,
+    MapasCulturais\Entities,
+    MapasCulturais\Definitions,
+    MapasCulturais\Exceptions;
 
+<<<<<<< HEAD
 namespace Report;
 
 
@@ -52,3 +58,20 @@ class Plugin extends \MapasCulturais\Plugin
         $app->registerController('CinemaVideoController', 'Report\controllers\CinemaVideoController');
     }
 }
+=======
+class Plugin extends \MapasCulturais\Plugin {
+    public function _init() {
+        parent::_init();
+        $app = App::i();
+
+        $app->hook("<<GET|POST>>()", function()use($app){
+            $response = $app->response();
+        });
+    }
+
+    public function register() {
+        // register metadata, taxonomies
+
+    }
+}
+>>>>>>> c850b3214e8d890c670e2a82ba390d57fc4618f7
