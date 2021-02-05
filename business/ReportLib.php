@@ -43,7 +43,7 @@ class ReportLib
 
 
     //GERA O DOWNLOAD DOS RELATÓRIOS
-    public function downloadFiles($arquivo)
+    public function downloadFiles($arquivo, $dataFile)
     {
         if (isset($arquivo) && file_exists($arquivo)) {
             // faz o teste se a variavel não esta vazia e se o arquivo realmente existe
@@ -73,7 +73,8 @@ class ReportLib
             // informa ao navegador que é tipo anexo e faz abrir a janela de download, tambem informa o nome do arquivo
             readfile($arquivo); // lê o arquivo
             //APAGA O RELATÓRIO TEMPORÁRIO, JSON TEMPORÁRIO,  e .jasper
-
+            unlink($arquivo);
+            unlink($dataFile);
             exit; // aborta pós-ações
         }
     }

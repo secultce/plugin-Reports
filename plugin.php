@@ -28,8 +28,12 @@ class Plugin extends \MapasCulturais\Plugin
             $this->part('reports/button-report', ['entity' => $opportunity]);
         });
         $app->hook("<<GET|POST>>(reportevaluationdocumental.documentqualificationsummary)", function () use ($app) {
-           $cinemaVideo = new ReportEvaluationsDocumental();
-           $cinemaVideo->documentqualificationsummary();
+            $opportunityId = (int) $this->data['id'];
+            $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
+            $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
+            $datePubish = date("d/m/Y", strtotime($date));
+            $cinemaVideo = new ReportEvaluationsDocumental();
+            $cinemaVideo->documentqualificationsummary($datePubish, $format, $opportunityId);
         });
     }
     public function register()
