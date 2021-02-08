@@ -10,7 +10,7 @@ use ReportLib;
 class ReportEvaluationsDocumental extends Controller
 {
    
-    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId, $namePublish){
+    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId){
         $app = App::i();
         $opportunityId = $opportunityId;
         $opportunity =  $app->repo("Opportunity")->find($opportunityId);
@@ -75,10 +75,10 @@ class ReportEvaluationsDocumental extends Controller
             fclose($file);
             $dataFile = __DIR__.'/../jasper/data-adapter-json/data.json';
         }
-        
+        $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
         $driver = 'json';
         $data_divulgacao = $datePubish;
-        $nome_edital = $namePublish;
+        $nome_edital = $publish[0]['name'];
         $query = null;
         if (file_exists($inputJasper)) {
             if($formatFile == 'pdf'){

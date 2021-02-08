@@ -40,7 +40,7 @@ class Plugin extends \MapasCulturais\Plugin
             $datePublish = date("d/m/Y", strtotime($date));
             $cinemaVideo = new ReportEvaluationsDocumental();
             $namePublish = 'Nome do edital';
-            $cinemaVideo->documentqualificationsummary($datePublish, $format, $opportunityId, $namePublish);
+            $cinemaVideo->documentqualificationsummary($datePublish, $format, $opportunityId);
         });
     }
     public function register()
