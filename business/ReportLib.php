@@ -17,13 +17,14 @@ class ReportLib
 
 
     //EXECUTA O ARQUIVO .JASPER
-    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $data_divulgacao)
+    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital)
     {
         //var_dump($format); die();
         $options = [
             'format' => [$format],
             'params' => [
                 "data_divulgacao" => $data_divulgacao,
+                "nome_edital" => $nome_edital,
             ],
             'locale' => 'en',
             'db_connection' => [

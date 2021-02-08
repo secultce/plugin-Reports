@@ -7,7 +7,7 @@ $route = App::i()->createUrl('reportevaluationdocumental', 'documentqualificatio
 ?>
 
 <!--botão de imprimir-->
-<a class="btn btn-default download"  ng-click="editbox.open('report-evaluation-documental-options', $event)" rel="noopener noreferrer">Imprimir Resultado</a>
+<a class="btn btn-default download"  ng-click="editbox.open('report-evaluation-documental-options', $event)" rel="noopener noreferrer">Imprimir Resultado Documental</a>
 
 <!-- Formulário -->
 <edit-box id="report-evaluation-documental-options" position="top" title="<?php i::esc_attr_e('Imprimir Resultado')?>" cancel-label="Cancelar" close-on-cancel="true">

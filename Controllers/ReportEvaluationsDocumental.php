@@ -10,14 +10,15 @@ use ReportLib;
 class ReportEvaluationsDocumental extends Controller
 {
    
-    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId){
+    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId, $namePublish){
         $app = App::i();
         $opportunityId = $opportunityId;
-        $opportunity = $app->repo("Opportunity")->find($opportunityId);
+        $opportunity =  $app->repo("Opportunity")->find($opportunityId);
         $report = new ReportLib();
         $filePDF = __DIR__ . '/../temp-files/resultado-preliminar.pdf';
         $fileXLS = __DIR__ . '/../temp-files/resultado-preliminar.xls';
         $inputJRXML = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jrxml';
+        $inputJASPER = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jasper';
         $outputReportFile = __DIR__ . '/../temp-files';
         $inputJasper = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
         //$dataFile = __DIR__ . '/../jasper/data-adapter-json/data.json';
@@ -32,9 +33,10 @@ class ReportEvaluationsDocumental extends Controller
         $q = $app->em->createQuery($dql);
         $q->setParameters(['opportunity' => $opportunity]);
         $evaluations = $q->getResult();
-
+        
         $json_array = [];
         foreach ($evaluations as $e) {
+            
             $registration = $e->registration;
             $evaluationData = (array) $e->evaluationData;
             $result = $e->getResultString();
@@ -48,18 +50,14 @@ class ReportEvaluationsDocumental extends Controller
             });
             $categoria = $registration->category;
             $agentRelations = $app->repo('RegistrationAgentRelation')->findBy(['owner'=>$registration]);
-            
             $coletivo = null;
-            
             if($agentRelations) {
                 $coletivo = $agentRelations[0]->agent->nomeCompleto;
             }
-
             $proponente = $registration->owner->nomeCompleto;
             if (strpos($categoria,'JURÍDICA') && $coletivo !== null) {
                 $proponente = $coletivo;
             } 
-            
             $json_array[] = [
                 'n_inscricao' => $registration->number,
                 'projeto' => $projectName,
@@ -77,26 +75,28 @@ class ReportEvaluationsDocumental extends Controller
             fclose($file);
             $dataFile = __DIR__.'/../jasper/data-adapter-json/data.json';
         }
+        
         $driver = 'json';
         $data_divulgacao = $datePubish;
+        $nome_edital = $namePublish;
         $query = null;
         if (file_exists($inputJasper)) {
             if($formatFile == 'pdf'){
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao);
+                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
             }else{
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao);
+                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($fileXLS, $dataFile);
             }
             
         } else {
             if($formatFile == 'pdf'){
                 $report->buildReport($inputJRXML);
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao);
+                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
             }else{
                 $report->buildReport($inputJRXML);
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao);
+                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($fileXLS, $dataFile);
             }
         }

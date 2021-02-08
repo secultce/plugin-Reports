@@ -4,6 +4,7 @@
 	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="New Data Adapter "/>
 	<subDataset name="Empty Dataset1" uuid="b4a32aa8-adb3-41e8-9e0b-37bda75f6750"/>
 	<parameter name="data_divulgacao" class="java.lang.String"/>
+	<parameter name="nome_edital" class="java.lang.String"/>
 	<queryString language="JSON">
 		<![CDATA[data]]>
 	</queryString>
@@ -52,7 +53,7 @@
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="11" isBold="true"/>
 				</textElement>
-				<text><![CDATA[XII EDITAL CEARÁ DE CINEMA E VÍDEO]]></text>
+				<text><![CDATA[]]></text>
 			</staticText>
 			<staticText>
 				<reportElement x="0" y="59" width="800" height="20" uuid="0632a56d-e7c1-42bc-a770-227531f63afe">
@@ -104,6 +105,13 @@
 				</textElement>
 				<text><![CDATA[RESULTADO DIVULGADO EM ]]></text>
 			</staticText>
+			<textField>
+				<reportElement x="136" y="80" width="530" height="19" uuid="9ca77587-7727-4e7d-915d-8a8f64618e63"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font fontName="SansSerif" size="11" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nome_edital}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageHeader>
 	<columnHeader>
