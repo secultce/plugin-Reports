@@ -72,10 +72,10 @@ class ReportEvaluationsDocumental extends Controller
             $jsonFile = json_encode($json_array);
             $stringFile = '{"data":'.$jsonFile.'}';
             $arquivoData = 'data.json';
-            $file = fopen(__DIR__ . '/' . $arquivoData ,'w');
+            $file = fopen(__DIR__ . '/../jasper/data-adapter-json/' . $arquivoData ,'w');
             fwrite($file, $stringFile);
             fclose($file);
-            $dataFile = __DIR__.'/../Controllers/data.json';
+            $dataFile = __DIR__.'/../jasper/data-adapter-json/data.json';
         }
         $driver = 'json';
         $data_divulgacao = $datePubish;
