@@ -7,10 +7,26 @@ use MapasCulturais\App,
     MapasCulturais\Controller;
 use ReportLib;
 
-class ReportEvaluationsDocumental extends Controller
+class ReportEvaluationsDocumental extends \MapasCulturais\Controllers\Opportunity
 {
-   
-    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId){
+    function __construct()
+    {
+        parent::__construct();
+
+        $app = App::i();
+        
+        $app->hook("<<GET|POST>>(reportevaluationdocumental.documentqualificationsummary)", function () use ($app) {
+          
+            $opportunityId = (int) $this->data['id'];
+            $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
+            $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
+            $datePublish = date("d/m/Y", strtotime($date));
+            $cinemaVideo = new ReportEvaluationsDocumental();
+            $cinemaVideo->documentqualificationsummary($opportunityId, $format, $datePublish);
+        
+        });
+    }
+    public function documentqualificationsummary($opportunityId, $format, $datePublish){
         $app = App::i();
         $opportunityId = $opportunityId;
         $opportunity =  $app->repo("Opportunity")->find($opportunityId);
@@ -22,7 +38,6 @@ class ReportEvaluationsDocumental extends Controller
         $outputReportFile = __DIR__ . '/../temp-files';
         $inputJasper = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
         //$dataFile = __DIR__ . '/../jasper/data-adapter-json/data.json';
-        $format = $formatFile;
         $dql = "SELECT e,r,a
                 FROM
                     MapasCulturais\Entities\RegistrationEvaluation e
@@ -75,13 +90,14 @@ class ReportEvaluationsDocumental extends Controller
             fclose($file);
             $dataFile = __DIR__.'/../jasper/data-adapter-json/data.json';
         }
+
         $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
         $driver = 'json';
-        $data_divulgacao = $datePubish;
+        $data_divulgacao = $datePublish;
         $nome_edital = $publish[0]['name'];
         $query = null;
         if (file_exists($inputJasper)) {
-            if($formatFile == 'pdf'){
+            if($format == 'pdf'){
                 $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
             }else{
@@ -90,7 +106,7 @@ class ReportEvaluationsDocumental extends Controller
             }
             
         } else {
-            if($formatFile == 'pdf'){
+            if($format == 'pdf'){
                 $report->buildReport($inputJRXML);
                 $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
