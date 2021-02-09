@@ -39,7 +39,6 @@ class Plugin extends \MapasCulturais\Plugin
             $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
             $datePublish = date("d/m/Y", strtotime($date));
             $cinemaVideo = new ReportEvaluationsDocumental();
-            $namePublish = 'Nome do edital';
             $cinemaVideo->documentqualificationsummary($datePublish, $format, $opportunityId);
         });
     }
