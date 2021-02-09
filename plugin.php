@@ -1,5 +1,6 @@
 <?php
 namespace Report;
+
 require_once PLUGINS_PATH . 'Report/Controllers/ReportEvaluationsDocumental.php';
 
 use MapasCulturais\App;
@@ -28,13 +29,23 @@ class Plugin extends \MapasCulturais\Plugin
             if($type_evaluation == 'documentary'){
                 $opportunity = $this->controller->requestedEntity;
                 $this->part('reports/button-report', ['entity' => $opportunity]);
+            }else{
+                echo '';
             }
+        });
+        $app->hook("<<GET|POST>>(reportevaluationdocumental.documentqualificationsummary)", function () use ($app) {
+            $opportunityId = (int) $this->data['id'];
+            $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
+            $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
+            $datePublish = date("d/m/Y", strtotime($date));
+            $cinemaVideo = new ReportEvaluationsDocumental();
+            $cinemaVideo->documentqualificationsummary($datePublish, $format, $opportunityId);
         });
     }
     public function register()
     {
         // register metadata, taxonomies
         $app = App::i();
-        $app->registerController('reportEvaluationDocumental', 'Report\Controllers\ReportEvaluationsDocumental');
+        $app->registerController('reportevaluationdocumental', 'Report\Controllers\ReportEvaluationsDocumental');
     }
 }

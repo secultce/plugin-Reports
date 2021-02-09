@@ -2,36 +2,16 @@
 namespace Report\Controllers;
 
 require_once PLUGINS_PATH . '/Report/business/ReportLib.php';
-use MapasCulturais\App;
-use MapasCulturais\i;
+use MapasCulturais\App,
+    MapasCulturais\i,
+    MapasCulturais\Controller;
 use ReportLib;
-//use \MapasCulturais\Controllers;
 
-class ReportEvaluationsDocumental extends \MapasCulturais\Controller
+class ReportEvaluationsDocumental extends Controller
 {
-   function _construct()
-   {
-       parent::_construct();
-
-   }
-    public function documentQualificationSummary(){
+   
+    public function documentqualificationsummary($datePubish, $formatFile, $opportunityId){
         $app = App::i();
-        echo '<h1>asdasdasdasd</h1>';
-        //$opportunityId = (int) $this->getUrlData['id'];
-        var_dump($app->request()->params()); 
-        //ar_dump($app->request()->args); die();
-        var_dump($this);die();
-        
-        
-
-            $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
-            $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
-            $datePublish = date("d/m/Y", strtotime($date));
-        
-        
-        
-        
-        
         $opportunityId = $opportunityId;
         $opportunity =  $app->repo("Opportunity")->find($opportunityId);
         $report = new ReportLib();
@@ -42,7 +22,7 @@ class ReportEvaluationsDocumental extends \MapasCulturais\Controller
         $outputReportFile = __DIR__ . '/../temp-files';
         $inputJasper = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
         //$dataFile = __DIR__ . '/../jasper/data-adapter-json/data.json';
-        //$format = $format;
+        $format = $formatFile;
         $dql = "SELECT e,r,a
                 FROM
                     MapasCulturais\Entities\RegistrationEvaluation e
@@ -97,11 +77,11 @@ class ReportEvaluationsDocumental extends \MapasCulturais\Controller
         }
         $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
         $driver = 'json';
-        $data_divulgacao = $datePublish;
+        $data_divulgacao = $datePubish;
         $nome_edital = $publish[0]['name'];
         $query = null;
         if (file_exists($inputJasper)) {
-            if($format == 'pdf'){
+            if($formatFile == 'pdf'){
                 $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
             }else{
@@ -110,7 +90,7 @@ class ReportEvaluationsDocumental extends \MapasCulturais\Controller
             }
             
         } else {
-            if($format == 'pdf'){
+            if($formatFile == 'pdf'){
                 $report->buildReport($inputJRXML);
                 $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
                 $report->downloadFiles($filePDF, $dataFile);
