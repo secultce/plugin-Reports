@@ -1,22 +1,26 @@
-<?php 
+<?php
 use MapasCulturais\App;
 use MapasCulturais\i;
 
-$route = App::i()->createUrl('reportevaluationdocumental', 'documentqualificationsummary', ['id'=>$entity->id]);
+$route = App::i()->createUrl('opportunity', 'documentQualificationSummary', ['id'=>$entity->id]);
 
 ?>
 
 <!--botão de imprimir-->
-<a class="btn btn-default download"  ng-click="editbox.open('report-evaluation-documental-options', $event)" rel="noopener noreferrer">Imprimir Resultado Documental</a>
+<a class="btn btn-default download" ng-click="editbox.open('report-evaluation-documental-options', $event)"
+    rel="noopener noreferrer">Imprimir Resultado Documental</a>
 
 <!-- Formulário -->
-<edit-box id="report-evaluation-documental-options" position="top" title="<?php i::esc_attr_e('Imprimir Resultado')?>" cancel-label="Cancelar" close-on-cancel="true">
-    <form class="form-report-evaluation-documental-options" action="<?=$route?>" method="POST">
+<edit-box id="report-evaluation-documental-options" position="top"
+    title="<?php i::esc_attr_e('Imprimir Resultado')?>"
+    cancel-label="Cancelar" close-on-cancel="true">
+    <form class="form-report-evaluation-documental-options"
+        action="<?=$route?>" method="POST">
         <label for="publishDate">Data publicação</label>
         <input type="date" name="publishDate" id="publishDate">
         <label for="from">Formato</label>
         <select name="fileFormat" id="fileFormat">
-            <option value="pdf" selected >PDF</option>
+            <option value="pdf" selected>PDF</option>
             <option value="xls">XLS</option>
             <!-- <option value="docx">DOC</option> -->
         </select>
