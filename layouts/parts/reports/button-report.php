@@ -2,7 +2,7 @@
 use MapasCulturais\App;
 use MapasCulturais\i;
 
-$route = App::i()->createUrl('opportunity', 'documentQualificationSummary', ['id'=>$entity->id]);
+$route = App::i()->createUrl('documental', 'report', ['id'=>$entity->id]);
 
 ?>
 
