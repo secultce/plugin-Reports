@@ -35,5 +35,6 @@ class Plugin extends \MapasCulturais\Plugin
         // register metadata, taxonomies
         $app = App::i();
         $app->registerController('documental', 'Report\Controllers\Documental');
+        $app->registerController('reportindex', 'Report\Controllers\ReportIndex');
     }
 }

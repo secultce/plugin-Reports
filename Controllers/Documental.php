@@ -2,16 +2,19 @@
 namespace Report\Controllers;
 
 require_once PLUGINS_PATH . '/Report/business/ReportLib.php';
+require_once PLUGINS_PATH . '/Report/Controllers/ReportIndex.php';
 
 use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\i;
 use ReportLib;
+use Report\Controllers\ReportIndex;
 
 class Documental extends Controller
 {
     public function ALL_report()
     {
+        $reportIndex = new ReportIndex();
         $app = App::i();
         $opportunityId = (int) $this->data['id'];
         $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
@@ -70,12 +73,16 @@ class Documental extends Controller
                     'motivo_inabilitacao' => $descumprimentoDosItens,
                 ];
             $jsonFile = json_encode($json_array);
-            $stringFile = '{"data":'.$jsonFile.'}';
-            $arquivoData = 'data.json';
-            $file = fopen(__DIR__ . '/../jasper/data-adapter-json/' . $arquivoData, 'w');
-            fwrite($file, $stringFile);
-            fclose($file);
-            $dataFile = __DIR__.'/../jasper/data-adapter-json/data.json';
+            //$file =
+            $dataFile = $reportIndex->generationJSONFile($jsonFile);
+            //__DIR__.'/../jasper/data-adapter-json/'.$file;
+            //var_dump($dataFile);
+            //die();
+            // $stringFile = '{"data":'.$jsonFile.'}';
+            // $arquivoData = 'data.json';
+            // $file = fopen(__DIR__ . '/../jasper/data-adapter-json/' . $arquivoData, 'w');
+            // fwrite($file, $stringFile);
+            // fclose($file);
         }
 
         $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
