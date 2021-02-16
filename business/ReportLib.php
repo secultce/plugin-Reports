@@ -14,18 +14,12 @@ class ReportLib
         $jasper = new PHPJasper();
         $jasper->compile($inputJRXML)->execute();
     }
-
-
     //EXECUTA O ARQUIVO .JASPER
-    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital)
+    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $params=null)
     {
-        //var_dump($format); die();
         $options = [
             'format' => [$format],
-            'params' => [
-                "data_divulgacao" => $data_divulgacao,
-                "nome_edital" => $nome_edital,
-            ],
+            'params' => $params,
             'locale' => 'en',
             'db_connection' => [
                 'driver' => $driver,
@@ -34,7 +28,6 @@ class ReportLib
             ],
         ];
         $jasper = new PHPJasper();
-
         return $jasper->process(
             $inputReport,
             $outputReport,

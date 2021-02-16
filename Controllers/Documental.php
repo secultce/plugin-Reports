@@ -17,8 +17,6 @@ class Documental extends Controller
         $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
         $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
         $datePublish = date("d/m/Y", strtotime($date));
-        //$cinemaVideo = new ReportEvaluationDocumental();
-        //$cinemaVideo->documentqualificationsummary($opportunityId, $format, $datePublish);
         $opportunity =  $app->repo("Opportunity")->find($opportunityId);
         $report = new ReportLib();
         $filePDF = __DIR__ . '/../temp-files/resultado-preliminar.pdf';
@@ -26,7 +24,7 @@ class Documental extends Controller
         $inputJRXML = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jrxml';
         $inputJASPER = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jasper';
         $outputReportFile = __DIR__ . '/../temp-files';
-        $inputJasper = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
+        $inputReportFile = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
         //$dataFile = __DIR__ . '/../jasper/data-adapter-json/data.json';
         $dql = "SELECT e,r,a
                     FROM
@@ -83,24 +81,28 @@ class Documental extends Controller
         $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
         $driver = 'json';
         $data_divulgacao = $datePublish;
-        $nome_edital = utf8_encode($publish[0]['name']);
+        $nome_edital = $publish[0]['name'];
         $query = null;
-        if (file_exists($inputJasper)) {
+        $params = [
+            "data_divulgacao" => $data_divulgacao,
+            "nome_edital" => $nome_edital,
+        ];
+        if (file_exists($inputReportFile)) {
             if ($format == 'pdf') {
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
+                $report->executeReport($inputReportFile, $outputReportFile, $dataFile, $format, $driver, $query, $params);
                 $report->downloadFiles($filePDF, $dataFile);
             } else {
-                $report->executeReport($inputJasper, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
+                $report->executeReport($inputReportFile, $outputReportFile, $dataFile, $format, $driver, $query, $params);
                 $report->downloadFiles($fileXLS, $dataFile);
             }
         } else {
             if ($format == 'pdf') {
                 $report->buildReport($inputJRXML);
-                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
+                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $params);
                 $report->downloadFiles($filePDF, $dataFile);
             } else {
                 $report->buildReport($inputJRXML);
-                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $data_divulgacao, $nome_edital);
+                $report->executeReport($inputJASPER, $outputReportFile, $dataFile, $format, $driver, $query, $params);
                 $report->downloadFiles($fileXLS, $dataFile);
             }
         }
