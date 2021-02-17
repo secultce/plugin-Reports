@@ -1,20 +1,20 @@
 <?php
+
 namespace Report\Controllers;
 
 require_once PLUGINS_PATH . '/Report/business/ReportLib.php';
-require_once PLUGINS_PATH . '/Report/Controllers/ReportIndex.php';
+require_once PLUGINS_PATH . '/Report/Controllers/Report.php';
 
 use MapasCulturais\App;
 use MapasCulturais\Controller;
 use MapasCulturais\i;
 use ReportLib;
-use Report\Controllers\ReportIndex;
+use Report\Controllers\Report;
 
-class Documental extends Controller
+class Documental extends Report
 {
     public function ALL_report()
     {
-        $reportIndex = new ReportIndex();
         $app = App::i();
         $opportunityId = (int) $this->data['id'];
         $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
@@ -39,7 +39,7 @@ class Documental extends Controller
         $q = $app->em->createQuery($dql);
         $q->setParameters(['opportunity' => $opportunity]);
         $evaluations = $q->getResult();
-            
+
         $json_array = [];
         foreach ($evaluations as $e) {
             $registration = $e->registration;
@@ -54,7 +54,7 @@ class Documental extends Controller
                 return $motivos;
             });
             $categoria = $registration->category;
-            $agentRelations = $app->repo('RegistrationAgentRelation')->findBy(['owner'=>$registration]);
+            $agentRelations = $app->repo('RegistrationAgentRelation')->findBy(['owner' => $registration]);
             $coletivo = null;
             if ($agentRelations) {
                 $coletivo = $agentRelations[0]->agent->nomeCompleto;
@@ -64,25 +64,14 @@ class Documental extends Controller
                 $proponente = $coletivo;
             }
             $json_array[] = [
-                    'n_inscricao' => $registration->number,
-                    'projeto' => $projectName,
-                    'proponente' => trim($proponente),
-                    'categoria' => $categoria,
-                    'municipio' => trim($registration->owner->En_Municipio),
-                    'resultado' => ($result == 'Válida') ? 'HABILITADO' : 'INABILITADO',
-                    'motivo_inabilitacao' => $descumprimentoDosItens,
-                ];
-            $jsonFile = json_encode($json_array);
-            //$file =
-            $dataFile = $reportIndex->generationJSONFile($jsonFile);
-            //__DIR__.'/../jasper/data-adapter-json/'.$file;
-            //var_dump($dataFile);
-            //die();
-            // $stringFile = '{"data":'.$jsonFile.'}';
-            // $arquivoData = 'data.json';
-            // $file = fopen(__DIR__ . '/../jasper/data-adapter-json/' . $arquivoData, 'w');
-            // fwrite($file, $stringFile);
-            // fclose($file);
+                'n_inscricao' => $registration->number,
+                'projeto' => $projectName,
+                'proponente' => trim($proponente),
+                'categoria' => $categoria,
+                'municipio' => trim($registration->owner->En_Municipio),
+                'resultado' => ($result == 'Válida') ? 'HABILITADO' : 'INABILITADO',
+                'motivo_inabilitacao' => $descumprimentoDosItens,
+            ];
         }
 
         $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
@@ -94,6 +83,8 @@ class Documental extends Controller
             "data_divulgacao" => $data_divulgacao,
             "nome_edital" => $nome_edital,
         ];
+        $jsonFile = json_encode($json_array);
+        $dataFile = $this->generationJSONFile($jsonFile);
         if (file_exists($inputReportFile)) {
             if ($format == 'pdf') {
                 $report->executeReport($inputReportFile, $outputReportFile, $dataFile, $format, $driver, $query, $params);

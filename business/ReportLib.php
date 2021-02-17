@@ -15,7 +15,7 @@ class ReportLib
         $jasper->compile($inputJRXML)->execute();
     }
     //EXECUTA O ARQUIVO .JASPER
-    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $params=null)
+    public function executeReport($inputReport, $outputReport, $dataFile, $format, $driver, $query, $params = null)
     {
         $options = [
             'format' => [$format],
