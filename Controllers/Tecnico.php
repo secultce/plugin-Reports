@@ -113,7 +113,9 @@ class Tecnico extends Report
         $stmt->execute();
         $data = $stmt->fetchAll();
         $jsonFile = json_encode($data);
+
         $dataFile = $this->generationJSONFile($jsonFile);
+
         //echo '{"data":' . json_encode($data) . '}';
 
         if (file_exists($inputReportFile)) {
