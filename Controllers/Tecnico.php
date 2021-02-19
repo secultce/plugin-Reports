@@ -95,13 +95,20 @@ class Tecnico extends Report
             ";
         $driver = 'json';
         $query = null;
-        $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
-        $nome_edital = $publish[0]['name'];
+        $publish = $app->repo("Opportunity")->find($opportunityId);
+        $nome_edital = $publish->name;
+
         $params = [
             "data_divulgacao" => $datePublish,
             "nome_edital" => $nome_edital,
-
         ];
+
+        $count = 1;
+        foreach($quantityEvaluators as $qe) {
+            $params["avaliador_$count"] = $qe["name"];
+            $count++;
+        }
+
         $stmt = $app->em->getConnection()->prepare($sqlData);
         $stmt->execute();
         $data = $stmt->fetchAll();
