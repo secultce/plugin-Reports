@@ -12,6 +12,10 @@
 	<queryString language="JSON">
 		<![CDATA[data]]>
 	</queryString>
+	<field name="ranking" class="java.lang.Integer">
+		<property name="net.sf.jasperreports.json.field.expression" value="ranking"/>
+		<fieldDescription><![CDATA[ranking]]></fieldDescription>
+	</field>
 	<field name="n_inscricao" class="java.lang.String">
 		<property name="net.sf.jasperreports.json.field.expression" value="n_inscricao"/>
 		<fieldDescription><![CDATA[n_inscricao]]></fieldDescription>
@@ -20,13 +24,17 @@
 		<property name="net.sf.jasperreports.json.field.expression" value="categoria"/>
 		<fieldDescription><![CDATA[categoria]]></fieldDescription>
 	</field>
-	<field name="responsavel" class="java.lang.String">
-		<property name="net.sf.jasperreports.json.field.expression" value="responsavel"/>
-		<fieldDescription><![CDATA[responsavel]]></fieldDescription>
+	<field name="proponente" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="proponente"/>
+		<fieldDescription><![CDATA[proponente]]></fieldDescription>
 	</field>
-	<field name="cidade" class="java.lang.String">
-		<property name="net.sf.jasperreports.json.field.expression" value="cidade"/>
-		<fieldDescription><![CDATA[cidade]]></fieldDescription>
+	<field name="projeto" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="projeto"/>
+		<fieldDescription><![CDATA[projeto]]></fieldDescription>
+	</field>
+	<field name="municipio" class="java.lang.String">
+		<property name="net.sf.jasperreports.json.field.expression" value="municipio"/>
+		<fieldDescription><![CDATA[municipio]]></fieldDescription>
 	</field>
 	<field name="nota_1" class="java.lang.Integer">
 		<property name="net.sf.jasperreports.json.field.expression" value="nota_1"/>
@@ -52,11 +60,6 @@
 		<property name="net.sf.jasperreports.json.field.expression" value="media"/>
 		<fieldDescription><![CDATA[media]]></fieldDescription>
 	</field>
-	<field name="ranking" class="java.lang.Integer">
-		<property name="net.sf.jasperreports.json.field.expression" value="ranking"/>
-		<fieldDescription><![CDATA[ranking]]></fieldDescription>
-	</field>
-	<field name="projeto" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

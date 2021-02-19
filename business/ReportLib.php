@@ -8,9 +8,6 @@ class ReportLib
     //BUILDA O ARQUIVO JRXML PARA .JASPER
     public function buildReport($inputJRXML)
     {
-
-        //$input = __DIR__."/../jasper/resultado-preliminar.jrxml";
-        //echo $input; die();
         $jasper = new PHPJasper();
         $jasper->compile($inputJRXML)->execute();
     }

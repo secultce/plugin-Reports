@@ -53,7 +53,6 @@ class Tecnico extends Report
         $inputReportFile = __DIR__ . "/../jasper/build/Relatorio_Tecnico_$countQuantityEvaluators.jasper";
 
 
-
         $sqlData = "
                 SELECT data.*, ROW_NUMBER () OVER (ORDER BY media DESC) AS RANKING FROM (
                     SELECT
@@ -104,7 +103,7 @@ class Tecnico extends Report
         ];
 
         $count = 1;
-        foreach($quantityEvaluators as $qe) {
+        foreach ($quantityEvaluators as $qe) {
             $params["avaliador_$count"] = $qe["name"];
             $count++;
         }
