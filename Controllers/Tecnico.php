@@ -37,18 +37,22 @@ class Tecnico extends Report
         $stmtQuantityEvaluators = $app->em->getConnection()->prepare($sqlQuantityEvaluators);
         $stmtQuantityEvaluators->execute();
         $quantityEvaluators = $stmtQuantityEvaluators->fetchAll();
+        $countQuantityEvaluators = count($quantityEvaluators);
 
-        $report = new ReportLib();
-        $filePDF = __DIR__ . "/../temp-files/relatorio-tecnico.pdf";
-        $fileXLS = __DIR__ . "/../temp-files/relatorio-tecnico.xls";
-        $inputJRXML = __DIR__ . "/../jasper/jrxml/Relatorio_Tecnico_" . count($quantityEvaluators) . ".jrxml";
-        $inputJASPER = __DIR__ . "/../jasper/jrxml/Relatorio_Tecnico_" . count($quantityEvaluators) . ".jasper";
-        $outputReportFile = __DIR__ . "/../temp-files";
-        $inputReportFile = __DIR__ . "/../jasper/build/Relatorio_Tecnico" . count($quantityEvaluators) . ".jasper";
-
-        if (count($quantityEvaluators) == 0) {
+        if (!$countQuantityEvaluators) {
             throw new Error('Não existem avaliadores!');
         }
+
+        $report = new ReportLib();
+
+        $filePDF = __DIR__ . "/../temp-files/Relatorio_Tecnico_$countQuantityEvaluators.pdf";
+        $fileXLS = __DIR__ . "/../temp-files/Relatorio_Tecnico_$countQuantityEvaluators.xls";
+        $inputJRXML = __DIR__ . "/../jasper/jrxml/Relatorio_Tecnico_$countQuantityEvaluators.jrxml";
+        $inputJASPER = __DIR__ . "/../jasper/jrxml/Relatorio_Tecnico_$countQuantityEvaluators.jasper";
+        $outputReportFile = __DIR__ . "/../temp-files";
+        $inputReportFile = __DIR__ . "/../jasper/build/Relatorio_Tecnico_$countQuantityEvaluators.jasper";
+
+
 
         $sqlData = "
                 SELECT data.*, ROW_NUMBER () OVER (ORDER BY media DESC) AS RANKING FROM (
@@ -60,15 +64,15 @@ class Tecnico extends Report
                         r.agents_data::json->'owner'->>'En_Municipio' municipio, \n
             ";
 
-        for ($i = 1; $i <= count($quantityEvaluators); $i++) {
+        for ($i = 1; $i <= $countQuantityEvaluators; $i++) {
             $sqlData .= "   COALESCE(CAST(nota_$i.result AS FLOAT), 0) nota_$i, \n";
         }
 
         $sqlData .= "(";
 
-        for ($i = 1; $i <= count($quantityEvaluators); $i++) {
-            if ($i == count($quantityEvaluators)) {
-                $sqlData .= "   COALESCE(CAST(nota_$i.result AS FLOAT), 0)) / " . count($quantityEvaluators) . " media \n";
+        for ($i = 1; $i <= $countQuantityEvaluators; $i++) {
+            if ($i == $countQuantityEvaluators) {
+                $sqlData .= "   COALESCE(CAST(nota_$i.result AS FLOAT), 0)) / " . $countQuantityEvaluators . " media \n";
             } else {
                 $sqlData .= "   COALESCE(CAST(nota_$i.result AS FLOAT), 0) + \n";
             }
@@ -91,12 +95,20 @@ class Tecnico extends Report
             ";
         $driver = 'json';
         $query = null;
+        $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
+        $nome_edital = $publish[0]['name'];
+        $params = [
+            "data_divulgacao" => $datePublish,
+            "nome_edital" => $nome_edital,
+
+        ];
         $stmt = $app->em->getConnection()->prepare($sqlData);
         $stmt->execute();
         $data = $stmt->fetchAll();
         $jsonFile = json_encode($data);
         $dataFile = $this->generationJSONFile($jsonFile);
         //echo '{"data":' . json_encode($data) . '}';
+
         if (file_exists($inputReportFile)) {
             if ($format == 'pdf') {
                 $report->executeReport($inputReportFile, $outputReportFile, $dataFile, $format, $driver, $query, $params);
