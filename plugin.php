@@ -38,12 +38,22 @@ class Plugin extends \MapasCulturais\Plugin
                 $this->part('reports/technical--buton-report', ['entity' => $opportunity]);
             }
         });
+        //HOOK ADD BOTÃO NO EDITAL DE AUXÍLIO FINANCEIRO AO SETOR DE EVENTOS
+        $app->hook('template(opportunity.single.header-inscritos):end', function () use ($app) {
+            $opportunity = $this->controller->requestedEntity;
+            $type_evaluation = $opportunity->evaluationMethodConfiguration->getDefinition()->slug;
+            if ($type_evaluation == 'technical') {
+                $opportunity = $this->controller->requestedEntity;
+                $this->part('reports/technical--buton-report', ['entity' => $opportunity]);
+            }
+        });
     }
     public function register()
     {
         // register metadata, taxonomies
         $app = App::i();
         $app->registerController('documental', 'Report\Controllers\Documental');
+        $app->registerController('tecnico', 'Report\Controllers\Tecnico');
         $app->registerController('tecnico', 'Report\Controllers\Tecnico');
     }
 }
