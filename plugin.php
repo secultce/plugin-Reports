@@ -22,9 +22,10 @@ class Plugin extends \MapasCulturais\Plugin
 
         //HOOK ADD BOTÃO NOS EDITAIS DOCUMENTAIS
         $app->hook('template(opportunity.single.header-inscritos):end', function () use ($app) {
+            $opportunityId = $this->controller->requestedEntity->id;
             $opportunity = $this->controller->requestedEntity;
             $type_evaluation = $opportunity->evaluationMethodConfiguration->getDefinition()->slug;
-            if ($type_evaluation == 'documentary') {
+            if ($type_evaluation == 'documentary' && $opportunityId != '2852') {
                 $opportunity = $this->controller->requestedEntity;
                 $this->part('reports/button-report', ['entity' => $opportunity]);
             }
@@ -38,13 +39,13 @@ class Plugin extends \MapasCulturais\Plugin
                 $this->part('reports/technical--buton-report', ['entity' => $opportunity]);
             }
         });
+
         //HOOK ADD BOTÃO NO EDITAL DE AUXÍLIO FINANCEIRO AO SETOR DE EVENTOS
         $app->hook('template(opportunity.single.header-inscritos):end', function () use ($app) {
+            $opportunityId = $this->controller->requestedEntity->id;
             $opportunity = $this->controller->requestedEntity;
-            $type_evaluation = $opportunity->evaluationMethodConfiguration->getDefinition()->slug;
-            if ($type_evaluation == 'technical') {
-                $opportunity = $this->controller->requestedEntity;
-                $this->part('reports/technical--buton-report', ['entity' => $opportunity]);
+            if ($opportunityId == '2852') {
+                $this->part('reports/button-auxilio-eventos-report', ['entity' => $opportunity]);
             }
         });
     }
@@ -54,6 +55,6 @@ class Plugin extends \MapasCulturais\Plugin
         $app = App::i();
         $app->registerController('documental', 'Report\Controllers\Documental');
         $app->registerController('tecnico', 'Report\Controllers\Tecnico');
-        $app->registerController('tecnico', 'Report\Controllers\Tecnico');
+        $app->registerController('auxilioEventos', 'Report\Controllers\AuxilioEventos');
     }
 }

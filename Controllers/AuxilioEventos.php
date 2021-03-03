@@ -16,19 +16,23 @@ class AuxilioEventos extends Report
     public function ALL_report()
     {
         $app = App::i();
-        $opportunityId = (int) $this->data['id'];
-        $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
-        $date = isset($this->data['publishDate']) ? $this->data['publishDate'] : date("d/m/Y");
-        $datePublish = date("d/m/Y", strtotime($date));
-        $opportunity =  $app->repo("Opportunity")->find($opportunityId);
         $report = new ReportLib();
-        $filePDF = __DIR__ . '/../temp-files/resultado-preliminar.pdf';
-        $fileXLS = __DIR__ . '/../temp-files/resultado-preliminar.xls';
-        $inputJRXML = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jrxml';
-        $inputJASPER = __DIR__ . '/../jasper/jrxml/resultado-preliminar.jasper';
+        $opportunityId = (int) $this->data['id'];
+        $opportunity =  $app->repo("Opportunity")->find($opportunityId);
+        $format = isset($this->data['fileFormat']) ? $this->data['fileFormat'] : 'pdf';
+        $data_divulgacao = date("d/m/Y - H:i:s", time());
+        $filePDF = __DIR__ . '/../temp-files/EDITAL-AUXILIO-FINANCEIRO-AO-SETOR-DE-EVENTOS.pdf';
+        $fileXLS = __DIR__ . '/../temp-files/EDITAL-AUXILIO-FINANCEIRO-AO-SETOR-DE-EVENTOS.xls';
+        $inputJRXML = __DIR__ . '/../jasper/jrxml/EDITAL-AUXILIO-FINANCEIRO-AO-SETOR-DE-EVENTOS.jrxml';
+        $inputJASPER = __DIR__ . '/../jasper/jrxml/EDITAL-AUXILIO-FINANCEIRO-AO-SETOR-DE-EVENTOS.jasper';
         $outputReportFile = __DIR__ . '/../temp-files';
-        $inputReportFile = __DIR__ . '/../jasper/build/resultado-preliminar.jasper';
-        //$dataFile = __DIR__ . '/../jasper/data-adapter-json/data.json';
+        $inputReportFile = __DIR__ . '/../jasper/build/EDITAL-AUXILIO-FINANCEIRO-AO-SETOR-DE-EVENTOS.jasper';
+        $driver = 'json';
+        $query = null;
+        $params = [
+            "data_divulgacao" => $data_divulgacao
+        ];
+
         $dql = "SELECT e,r,a
                     FROM
                         MapasCulturais\Entities\RegistrationEvaluation e
@@ -39,52 +43,32 @@ class AuxilioEventos extends Report
         $q = $app->em->createQuery($dql);
         $q->setParameters(['opportunity' => $opportunity]);
         $evaluations = $q->getResult();
-
         $json_array = [];
         foreach ($evaluations as $e) {
             $registration = $e->registration;
             $evaluationData = (array) $e->evaluationData;
             $result = $e->getResultString();
             $metadata = (array) $registration->getMetadata();
-            $projectName = (isset($metadata['projectName'])) ? $metadata['projectName'] : '';
-            $descumprimentoDosItens = (string) array_reduce($evaluationData, function ($motivos, $item) {
-                if ($item['evaluation'] == 'invalid') {
-                    $motivos .= trim($item['obs_items']);
-                }
-                return $motivos;
-            });
-            $categoria = $registration->category;
-            $agentRelations = $app->repo('RegistrationAgentRelation')->findBy(['owner' => $registration]);
-            $coletivo = null;
-            if ($agentRelations) {
-                $coletivo = $agentRelations[0]->agent->nomeCompleto;
-            }
-            $proponente = $registration->owner->nomeCompleto;
-            if (strpos($categoria, 'JURÍDICA') && $coletivo !== null) {
-                $proponente = $coletivo;
-            }
-            $json_array[] = [
-                'n_inscricao' => $registration->number,
-                'projeto' => $projectName,
-                'proponente' => trim($proponente),
-                'categoria' => $categoria,
-                'municipio' => trim($registration->owner->En_Municipio),
-                'resultado' => ($result == 'Válida') ? 'HABILITADO' : 'INABILITADO',
-                'motivo_inabilitacao' => $descumprimentoDosItens,
-            ];
         }
+        /*
+           Num inscricao = 
+           
+           Nome = 
+           
+           Função = 
 
-        $publish = (array)$app->repo("Opportunity")->findOpportunitiesWithDateByIds($opportunityId);
-        $driver = 'json';
-        $data_divulgacao = $datePublish;
-        $nome_edital = $publish[0]['name'];
-        $query = null;
-        $params = [
-            "data_divulgacao" => $data_divulgacao,
-            "nome_edital" => $nome_edital,
-        ];
-        $jsonFile = json_encode($json_array);
-        $dataFile = $this->generationJSONFile($jsonFile);
+           Municipio = 
+
+           Situação = 
+
+           Motivo = 
+        
+        */
+
+
+        var_dump($json_array);
+        die();
+
         if (file_exists($inputReportFile)) {
             if ($format == 'pdf') {
                 $report->executeReport($inputReportFile, $outputReportFile, $dataFile, $format, $driver, $query, $params);
