@@ -25,11 +25,7 @@ class ReportLib
             ],
         ];
         $jasper = new PHPJasper();
-        return $jasper->process(
-            $inputReport,
-            $outputReport,
-            $options
-        )->execute();
+        $jasper->process($inputReport, $outputReport, $options)->execute();
     }
 
 

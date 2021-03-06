@@ -83,6 +83,7 @@ class Documental extends Report
             "data_divulgacao" => $data_divulgacao,
             "nome_edital" => $nome_edital,
         ];
+
         $jsonFile = json_encode($json_array);
         $dataFile = $this->generationJSONFile($jsonFile);
         if (file_exists($inputReportFile)) {
