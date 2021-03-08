@@ -207,8 +207,8 @@
 	</columnHeader>
 	<detail>
 		<band height="30" splitType="Stretch">
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="1" y="0" width="29" height="30" uuid="0ced1e58-80d6-49d1-a0c2-717fa5635372">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="1" y="0" width="29" height="30" isPrintWhenDetailOverflows="true" uuid="0ced1e58-80d6-49d1-a0c2-717fa5635372">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -219,8 +219,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$V{REPORT_COUNT}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="30" y="0" width="80" height="30" uuid="581aa1d1-5c94-4018-aa7f-43cbf8b9523d">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="30" y="0" width="80" height="30" isPrintWhenDetailOverflows="true" uuid="581aa1d1-5c94-4018-aa7f-43cbf8b9523d">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -231,8 +231,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{n_inscricao}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="110" y="0" width="150" height="30" uuid="fb83d1f0-cf1c-4788-ac40-6f8661936c08">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="110" y="0" width="150" height="30" isPrintWhenDetailOverflows="true" uuid="fb83d1f0-cf1c-4788-ac40-6f8661936c08">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -243,8 +243,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{proponente}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="260" y="0" width="160" height="30" uuid="8933e851-8948-4544-923a-a4427fa4beb6">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="260" y="0" width="160" height="30" isPrintWhenDetailOverflows="true" uuid="8933e851-8948-4544-923a-a4427fa4beb6">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -255,8 +255,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{funcao}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="420" y="0" width="110" height="30" uuid="146253d1-9e86-49de-823d-7eee2cc2bba9">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="420" y="0" width="110" height="30" isPrintWhenDetailOverflows="true" uuid="146253d1-9e86-49de-823d-7eee2cc2bba9">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -267,8 +267,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{municipio}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="530" y="0" width="100" height="30" uuid="afaca649-26c9-44f6-8d4d-10055f8badef">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="530" y="0" width="100" height="30" isPrintWhenDetailOverflows="true" uuid="afaca649-26c9-44f6-8d4d-10055f8badef">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -279,8 +279,8 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{situacao}]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement stretchType="ElementGroupHeight" x="630" y="0" width="171" height="30" uuid="82f60c5a-14ce-4a41-8789-366966d0adef">
+			<textField isStretchWithOverflow="true">
+				<reportElement positionType="Float" stretchType="RelativeToTallestObject" x="630" y="0" width="171" height="30" isPrintWhenDetailOverflows="true" uuid="82f60c5a-14ce-4a41-8789-366966d0adef">
 					<property name="com.jaspersoft.studio.data.defaultdataadapter" value="data-auxilio-financeiro-eventos.xml"/>
 				</reportElement>
 				<box>
@@ -293,13 +293,4 @@
 			</textField>
 		</band>
 	</detail>
-	<columnFooter>
-		<band splitType="Stretch"/>
-	</columnFooter>
-	<pageFooter>
-		<band splitType="Stretch"/>
-	</pageFooter>
-	<summary>
-		<band splitType="Stretch"/>
-	</summary>
 </jasperReport>
