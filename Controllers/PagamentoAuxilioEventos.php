@@ -35,60 +35,65 @@ class PagamentoAuxilioEventos extends Report
                 r.agents_data::json->'owner'->>'nomeCompleto' nome,
                 rm.value as funcao,
                 r.agents_data::json->'owner'->>'En_Municipio' municipio,
-                sp.valor as valor_parcela,
                 CASE
-                WHEN sp.status = 0 then 'PEDENTE'
-                WHEN sp.status = 1 then 'AGUARDANDO ENVIO'
-                WHEN sp.status = 2 then 'AGUARDANDO RETORNO'
-                WHEN sp.status = 3 then 'PAGO'
-                WHEN sp.status = 4 then 'ERRO'
-                end as status,
-                sp.error as motivo_erro,
-                sp.parcela as parcela	
+                    WHEN sp1.status = 0 then 'PEDENTE'
+                    WHEN sp1.status = 1 then 'AGUARDANDO ENVIO'
+                    WHEN sp1.status = 2 then 'AGUARDANDO RETORNO'
+                    WHEN sp1.status = 3 then 'PAGO'
+                    WHEN sp1.status = 4 then 'ERRO'
+                    WHEN sp1.status is null then 'PENDENTE'
+                end as parcela_1,
+                CASE
+                    WHEN sp2.status = 0 then 'PEDENTE'
+                    WHEN sp2.status = 1 then 'AGUARDANDO ENVIO'
+                    WHEN sp2.status = 2 then 'AGUARDANDO RETORNO'
+                    WHEN sp2.status = 3 then 'PAGO'
+                    WHEN sp2.status = 4 then 'ERRO'
+                    WHEN sp2.status is null then 'PENDENTE'
+                end as parcela_2,
+                CASE
+                    WHEN sp1.error IS NULL THEN 'PAGAMENTO NÃO ENVIADO AO BANCO'
+                    ELSE sp1.error
+                END  as motivo_1,
+                CASE
+                    WHEN sp2.error IS NULL THEN 'PAGAMENTO NÃO ENVIADO AO BANCO'
+                    ELSE sp2.error
+                END  as motivo_2
             from
                 public.registration as r
-                    left join public.registration_evaluation as re
-                        ON re.registration_id = r.id
                     INNER join public.registration_meta as rm
                         ON rm.object_id = r.id
-                    left join public.secultce_payments as sp
-                        on sp.registration_id = r.id
+                    left join public.secultce_payments as sp1
+                        on sp1.registration_id = r.id
+                        and sp1.parcela = 1
+                    left join public.secultce_payments as sp2
+                        on sp2.registration_id = r.id
+                        and sp2.parcela = 2
+                        
             where
                 opportunity_id = 2852
                 and r.status = 1
                 and rm.key = 'field_26552'
-                and sp.parcela in (1,2)
         ";
 
         $stmt = $app->em->getConnection()->prepare($sqlData);
         $stmt->execute();
         $data = $stmt->fetchAll();
-        $json_data = [];
         $json_array = [];
         foreach ($data as $d) {
             $funcao = json_decode($d['funcao']);
             $funcaoString = $funcao[0];
-            $json_data[] = [
+            $json_array[] = [
                 'n_inscricao' => $d['n_inscricao'],
                 "nome" => $d['nome'],
                 "funcao" => $funcaoString,
                 "municipio" => $d['municipio'],
-                "parcela_1" => $d['status'],
-                "motivo_1" => $d['motivo_erro'],
-                "parcela_2" => $d['status'],
-                "motivo_2" => $d['motivo_erro']
+                "parcela_1" => $d['parcela_1'],
+                "motivo_1" => $d['motivo_1'],
+                "parcela_2" => $d['parcela_2'],
+                "motivo_2" => $d['motivo_2']
             ];
         }
-        $json_array[] = [
-            'n_inscricao' => $json_data[0]['n_inscricao'],
-            "nome" => $json_data[0]['nome'],
-            "funcao" => $funcaoString,
-            "municipio" => $json_data[0]['municipio'],
-            "parcela_1" => $json_data[0]['parcela_1'],
-            "motivo_1" => $json_data[0]['motivo_1'],
-            "parcela_2" => $json_data[1]['parcela_2'],
-            "motivo_2" => $json_data[1]['motivo_2']
-        ];
         $driver = 'json';
         $query = null;
         $params = [
