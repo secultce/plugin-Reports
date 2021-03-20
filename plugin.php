@@ -56,6 +56,15 @@ class Plugin extends \MapasCulturais\Plugin
                 $this->part('reports/button-pagamento-auxilio-eventos', ['entity' => $opportunity]);
             }
         });
+
+        //HOOK ADD BOTÃO DE RANKING NO EDITAL DE AUXÍLIO FINANCEIRO AO SETOR DE EVENTOS
+        $app->hook('template(opportunity.single.header-inscritos):end', function () use ($app) {
+            $opportunityId = $this->controller->requestedEntity->id;
+            $opportunity = $this->controller->requestedEntity;
+            if ($opportunityId == '2852') {
+                $this->part('reports/button-ranking-auxilio-eventos', ['entity' => $opportunity]);
+            }
+        });
     }
     public function register()
     {
@@ -65,5 +74,6 @@ class Plugin extends \MapasCulturais\Plugin
         $app->registerController('tecnico', 'Report\Controllers\Tecnico');
         $app->registerController('auxilioEventos', 'Report\Controllers\AuxilioEventos');
         $app->registerController('pagamentoAuxilioEventos', 'Report\Controllers\PagamentoAuxilioEventos');
+        $app->registerController('rakingAuxilioEventos', 'Report\Controllers\RankingAuxilioEventos');
     }
 }
