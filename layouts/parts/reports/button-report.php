@@ -8,7 +8,7 @@ $route = App::i()->createUrl('documental', 'report', ['id' => $entity->id]);
 ?>
 
 <!--botão de imprimir-->
-<a class="btn btn-default download" ng-click="editbox.open('report-evaluation-documental-options', $event)" rel="noopener noreferrer">Imprimir Resultado Documental</a>
+<a class="btn btn-default download" ng-click="editbox.open('report-evaluation-documental-options', $event)" rel="noopener noreferrer">Imprimir Resultado Documental ***Henrique***</a>
 
 <!-- Formulário -->
 <edit-box id="report-evaluation-documental-options" position="top" title="<?php i::esc_attr_e('Imprimir Resultado') ?>" cancel-label="Cancelar" close-on-cancel="true">
@@ -21,6 +21,6 @@ $route = App::i()->createUrl('documental', 'report', ['id' => $entity->id]);
             <option value="xls">XLS</option>
             <!-- <option value="docx">DOC</option> -->
         </select>
-        <button class="btn btn-primary download" type="submit">Imprimir Resultado</button>
+        <button class="btn btn-primary download" type="submit">Imprimir Resultado ***Henrique***</button>
     </form>
 </edit-box>

@@ -40,6 +40,11 @@ class Documental extends Report
         $q->setParameters(['opportunity' => $opportunity]);
         $evaluations = $q->getResult();
 
+        // dd($evaluations);
+        if (!$evaluations) {
+            throw new \Exception(\MapasCulturais\i::__('Nao existem resultados disponíveis!'));
+        }
+
         $json_array = [];
         foreach ($evaluations as $e) {
             $registration = $e->registration;

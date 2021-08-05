@@ -20,6 +20,10 @@ class Plugin extends \MapasCulturais\Plugin
         $app = App::i();
 
 
+        // EDITAL CINEMA E VIDEO **1544**
+        // MECENAS **2788**
+        // ARTE EM REDE **3226**
+
         //HOOK ADD BOTÃO NOS EDITAIS DOCUMENTAIS
         $app->hook('template(opportunity.single.header-inscritos):end', function () use ($app) {
             $opportunityId = $this->controller->requestedEntity->id;
